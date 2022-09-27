@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
-import alertContext from "../../contexts/alert/alertContext";
+import AlertContext from "../../contexts/alert/alertContext";
 import GithubContext from "../../contexts/github/githubContext";
 
-const Search = () => {
+const Search = (props) => {
     const githubContext = useContext(GithubContext);
-    const alertContext = useContext(alertContext);
+    const alertContext = useContext(AlertContext);
     const [text, setText] = useState('');
 
     const onInputChange = event => {
@@ -13,9 +13,12 @@ const Search = () => {
 
     const submit = () => {
         if(text === ''){
-            return alertContext.setAlert('Please provide input', 'light');
+            alertContext.setAlert('Please provide input', 'light');
+            return;
         }
-        return githubContext.searchUsers(text);
+        githubContext.searchUsers(text);
+        setText('');
+        return;
     }
 
     const clear = () => {
@@ -24,7 +27,7 @@ const Search = () => {
 
     return (
         <div>
-                <input type="text" name="text" placeholder="Search here..." 
+                <input type="text" id="searchInput" name="text" placeholder="Search here..." 
                 onChange={onInputChange}
                 />
                 <button onClick={submit} className="btn btn-dark btn-block">Search</button>
